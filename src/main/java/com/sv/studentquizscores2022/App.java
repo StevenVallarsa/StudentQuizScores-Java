@@ -4,6 +4,7 @@ package com.sv.studentquizscores2022;
 import com.sv.studentquizscores2022.UI.UserIO;
 import com.sv.studentquizscores2022.UI.UserIOImpl;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,6 +19,8 @@ public class App {
     public static void main(String[] args) {
         
         Map<String, double[]> quizScores = new HashMap<>();
+        quizScores.put("Steve", new double[] {05, 99, 98});
+        quizScores.put("Julie", new double[] {99, 78, 55});
         boolean isLooping = true;
         
         UserIO io = new UserIOImpl();
@@ -34,7 +37,7 @@ public class App {
             io.print("5 - Display Highest Average");
             io.print("6 - Display Lowest Grade");
             io.print("7 - Display Lowest Average");
-            io.print("7 - EXIT");
+            io.print("8 - EXIT");
             
             int response = io.readInt("What is your selection?", 1, 8);
             
@@ -57,17 +60,53 @@ public class App {
                     }
                     break;
                 case 3:
-                    for (String student : quizScores.keySet()) {
-                        double average = Arrays.stream(quizScores.get(student)).average().orElse(0);
-                        io.print(student + ": " + Arrays.toString(quizScores.get(student)) + " : AVG: " + String.format("%.1f", average));
+                    if (quizScores.size() == 0) {
+                        io.print("There are no students to display.");
+                    } else {
+                        io.print("");
+                        for (String student : quizScores.keySet()) {
+                            String scoresString = Arrays.toString(quizScores.get(student));
+                            double average = Arrays.stream(quizScores.get(student)).average().orElse(0);
+                            String averageString = String.format("%.1f", average);
+                            
+                            io.print(student + ": " + scoresString + " : AVG: " + averageString);
+                        }
                     }
+                    break;
+                case 4:
+                    if (quizScores.size() == 0) {
+                        io.print("There are no students to display.");
+                    } else {
+                        double highestGrade = 0;
+                        for (String student : quizScores.keySet()) {
+                            double[] studentGrades = quizScores.get(student);
+                            double maxGrade = Arrays.stream(studentGrades).max().getAsDouble();
+                            if (maxGrade > highestGrade) {
+                                highestGrade = maxGrade;
+                            }
+                        }
+                        io.print("\nThe hightest grade is " + highestGrade + ", and was attained by:");
+                        for (String student : quizScores.keySet()) {
+                            for (double grade : quizScores.get(student)) {
+                                if (highestGrade == grade) {
+                                    io.print("- " + student);
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    break;
+                
+                    
+                case 8:
+                    isLooping = false;
                     break;
                 default:
                     io.print("That wasn't a valid choice. Try again.\n");
                     
-                    
             }
         }
+        io.print("\nGoodbye!");
     }
 
 }
