@@ -9,5 +9,8 @@ package com.sv.studentquizscores2022;
  * purpose: Practice userIO interface and implementation
  */
 public class App {
-
+    public static void main(String[] args) {
+        
+        
+    }
 }
