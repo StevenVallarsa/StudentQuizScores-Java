@@ -41,6 +41,9 @@ public class App {
             
             int response = io.readInt("What is your selection?", 1, 8);
             
+            // This is the "brute force" way of working through this menu.
+            // In a future exercise this will be refactored into separate
+            // methods.
             switch(response) {
                 case 1:
                     String studentToAdd = io.readString("Student name:");
@@ -50,6 +53,7 @@ public class App {
                     }
                     quizScores.put(studentToAdd, grades);
                     break;
+                    
                 case 2:
                     String studentToDelete = io.readString("Student name:");
                     if (quizScores.get(studentToDelete) == null) {
@@ -59,6 +63,7 @@ public class App {
                         io.print(studentToDelete + " has been removed.");
                     }
                     break;
+                    
                 case 3:
                     if (quizScores.size() == 0) {
                         io.print("There are no students to display.");
@@ -73,6 +78,7 @@ public class App {
                         }
                     }
                     break;
+                    
                 case 4:
                     if (quizScores.size() == 0) {
                         io.print("There are no students to display.");
@@ -96,7 +102,69 @@ public class App {
                         }
                     }
                     break;
-                
+                    
+                case 5:
+                    if (quizScores.size() == 0) {
+                        io.print("There are no students to display.");
+                    } else {
+                        double highestAverage = 0;
+                        for (String student : quizScores.keySet()) {
+                            double average = Arrays.stream(quizScores.get(student)).average().orElse(0);
+                            if (average > highestAverage) {
+                                highestAverage = average;
+                            }
+                        }
+                        io.print("\nThe hightest average is " + String.format("%.1f", highestAverage) + ", and was attained by:");
+                        for (String student : quizScores.keySet()) {
+                            if (Arrays.stream(quizScores.get(student)).average().orElse(0) == highestAverage) {
+                                io.print("- " + student);
+                            }
+                        }                        
+                    }
+                    break;
+                    
+                case 6:
+                    if (quizScores.size() == 0) {
+                        io.print("There are no students to display.");
+                    } else {
+                        double lowestGrade = 100;
+                        for (String student : quizScores.keySet()) {
+                            double[] studentGrades = quizScores.get(student);
+                            double minGrade = Arrays.stream(studentGrades).min().getAsDouble();
+                            if (minGrade < lowestGrade) {
+                                lowestGrade = minGrade;
+                            }
+                        }
+                        io.print("\nThe lowest grade is " + lowestGrade + ", and was attained by:");
+                        for (String student : quizScores.keySet()) {
+                            for (double grade : quizScores.get(student)) {
+                                if (lowestGrade == grade) {
+                                    io.print("- " + student);
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    break;
+                case 7:
+                    if (quizScores.size() == 0) {
+                        io.print("There are no students to display.");
+                    } else {
+                        double lowestAverage = 100;
+                        for (String student : quizScores.keySet()) {
+                            double average = Arrays.stream(quizScores.get(student)).average().orElse(0);
+                            if (average < lowestAverage) {
+                                lowestAverage = average;
+                            }
+                        }
+                        io.print("\nThe lowest average is " + String.format("%.1f", lowestAverage) + ", and was attained by:");
+                        for (String student : quizScores.keySet()) {
+                            if (Arrays.stream(quizScores.get(student)).average().orElse(0) == lowestAverage) {
+                                io.print("- " + student);
+                            }
+                        }                        
+                    }
+                    break;
                     
                 case 8:
                     isLooping = false;
