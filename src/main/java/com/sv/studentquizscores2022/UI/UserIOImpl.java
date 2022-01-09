@@ -22,7 +22,7 @@ public class UserIOImpl implements UserIO {
 
     @Override
     public String readString(String prompt) {
-        System.out.println(prompt);
+        print(prompt);
         return scanner.nextLine();
     }
 
@@ -36,7 +36,7 @@ public class UserIOImpl implements UserIO {
                 int number = Integer.parseInt(input);
                 return number;
             } catch (Exception e) {
-                System.out.println("That wasn't a valid number. Try again.");
+                print("That wasn't a valid number. Try again.");
             }
         }
     }
@@ -49,7 +49,7 @@ public class UserIOImpl implements UserIO {
             if (number >= min && number <= max) {
                 return number;
             }
-            System.out.println("That's not a valid choice. Try again.\n");
+            print("That's not a valid choice. Try again.\n");
         }
     }
 
@@ -63,7 +63,7 @@ public class UserIOImpl implements UserIO {
                 double number = Double.parseDouble(input);
                 return number;
             } catch (Exception e) {
-                System.out.println("That wasn't a valid grade. Try again.");
+                print("That wasn't a valid grade. Try again.");
             }
         }
     }
@@ -72,11 +72,11 @@ public class UserIOImpl implements UserIO {
     public double readDouble(String prompt, double min, double max) {
         
         while (true) {
-            double number = readDouble(prompt);
-            if (number >= min && number <= max) {
-                return number;
+            double grade = readDouble(prompt);
+            if (grade >= min && grade <= max) {
+                return grade;
             }
-            System.out.println("Only grades between 0 and 100 are accepted.\n");
+            print("Only grades between " + min + "and " + max + " are accepted.\n");
         }
     }
 }
