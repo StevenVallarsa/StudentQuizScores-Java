@@ -18,9 +18,9 @@ import java.util.Map;
 public class App {
     public static void main(String[] args) {
         
-        Map<String, double[]> quizScores = new HashMap<>();
-        quizScores.put("Steve", new double[] {05, 99, 98});
-        quizScores.put("Julie", new double[] {99, 78, 55});
+        Map<String, double[]> quizGrades = new HashMap<>();
+        quizGrades.put("Steve", new double[] {05, 99, 98});
+        quizGrades.put("Julie", new double[] {05, 99, 98});
         boolean isLooping = true;
         
         UserIO io = new UserIOImpl();
@@ -51,27 +51,27 @@ public class App {
                     for(int i = 0; i < 3; i++) {
                         grades[i] = io.readDouble("What is grade #" + i + 1, 0, 100);
                     }
-                    quizScores.put(studentToAdd, grades);
+                    quizGrades.put(studentToAdd, grades);
                     break;
                     
                 case 2:
                     String studentToDelete = io.readString("Student name:");
-                    if (quizScores.get(studentToDelete) == null) {
+                    if (quizGrades.get(studentToDelete) == null) {
                         io.print("That student doesn't exist.");
                     } else {
-                        quizScores.remove(studentToDelete);
+                        quizGrades.remove(studentToDelete);
                         io.print(studentToDelete + " has been removed.");
                     }
                     break;
                     
                 case 3:
-                    if (quizScores.size() == 0) {
+                    if (quizGrades.size() == 0) {
                         io.print("There are no students to display.");
                     } else {
                         io.print("");
-                        for (String student : quizScores.keySet()) {
-                            String scoresString = Arrays.toString(quizScores.get(student));
-                            double average = Arrays.stream(quizScores.get(student)).average().orElse(0);
+                        for (String student : quizGrades.keySet()) {
+                            String scoresString = Arrays.toString(quizGrades.get(student));
+                            double average = Arrays.stream(quizGrades.get(student)).average().orElse(0);
                             String averageString = String.format("%.1f", average);
                             
                             io.print(student + ": " + scoresString + " : AVG: " + averageString);
@@ -80,43 +80,40 @@ public class App {
                     break;
                     
                 case 4:
-                    if (quizScores.size() == 0) {
+                    if (quizGrades.size() == 0) {
                         io.print("There are no students to display.");
                     } else {
                         double highestGrade = 0;
-                        for (String student : quizScores.keySet()) {
-                            double[] studentGrades = quizScores.get(student);
-                            double maxGrade = Arrays.stream(studentGrades).max().getAsDouble();
+                        for (String student : quizGrades.keySet()) {
+                            double maxGrade = Arrays.stream(quizGrades.get(student)).max().getAsDouble();
                             if (maxGrade > highestGrade) {
                                 highestGrade = maxGrade;
                             }
                         }
                         io.print("\nThe hightest grade is " + highestGrade + ", and was attained by:");
-                        for (String student : quizScores.keySet()) {
-                            for (double grade : quizScores.get(student)) {
-                                if (highestGrade == grade) {
-                                    io.print("- " + student);
-                                    break;
-                                }
+                        for (String student : quizGrades.keySet()) {
+                            if (Arrays.stream(quizGrades.get(student)).anyMatch(grade -> grade == highestGrade)) {
+                                io.print("- " + student);
+                                
                             }
                         }
                     }
                     break;
                     
                 case 5:
-                    if (quizScores.size() == 0) {
+                    if (quizGrades.size() == 0) {
                         io.print("There are no students to display.");
                     } else {
                         double highestAverage = 0;
-                        for (String student : quizScores.keySet()) {
-                            double average = Arrays.stream(quizScores.get(student)).average().orElse(0);
+                        for (String student : quizGrades.keySet()) {
+                            double average = Arrays.stream(quizGrades.get(student)).average().orElse(0);
                             if (average > highestAverage) {
                                 highestAverage = average;
                             }
                         }
                         io.print("\nThe hightest average is " + String.format("%.1f", highestAverage) + ", and was attained by:");
-                        for (String student : quizScores.keySet()) {
-                            if (Arrays.stream(quizScores.get(student)).average().orElse(0) == highestAverage) {
+                        for (String student : quizGrades.keySet()) {
+                            if (Arrays.stream(quizGrades.get(student)).average().orElse(0) == highestAverage) {
                                 io.print("- " + student);
                             }
                         }                        
@@ -124,20 +121,19 @@ public class App {
                     break;
                     
                 case 6:
-                    if (quizScores.size() == 0) {
+                    if (quizGrades.size() == 0) {
                         io.print("There are no students to display.");
                     } else {
                         double lowestGrade = 100;
-                        for (String student : quizScores.keySet()) {
-                            double[] studentGrades = quizScores.get(student);
-                            double minGrade = Arrays.stream(studentGrades).min().getAsDouble();
+                        for (String student : quizGrades.keySet()) {
+                            double minGrade = Arrays.stream(quizGrades.get(student)).min().getAsDouble();
                             if (minGrade < lowestGrade) {
                                 lowestGrade = minGrade;
                             }
                         }
                         io.print("\nThe lowest grade is " + lowestGrade + ", and was attained by:");
-                        for (String student : quizScores.keySet()) {
-                            for (double grade : quizScores.get(student)) {
+                        for (String student : quizGrades.keySet()) {
+                            for (double grade : quizGrades.get(student)) {
                                 if (lowestGrade == grade) {
                                     io.print("- " + student);
                                     break;
@@ -147,19 +143,19 @@ public class App {
                     }
                     break;
                 case 7:
-                    if (quizScores.size() == 0) {
+                    if (quizGrades.size() == 0) {
                         io.print("There are no students to display.");
                     } else {
                         double lowestAverage = 100;
-                        for (String student : quizScores.keySet()) {
-                            double average = Arrays.stream(quizScores.get(student)).average().orElse(0);
+                        for (String student : quizGrades.keySet()) {
+                            double average = Arrays.stream(quizGrades.get(student)).average().orElse(0);
                             if (average < lowestAverage) {
                                 lowestAverage = average;
                             }
                         }
                         io.print("\nThe lowest average is " + String.format("%.1f", lowestAverage) + ", and was attained by:");
-                        for (String student : quizScores.keySet()) {
-                            if (Arrays.stream(quizScores.get(student)).average().orElse(0) == lowestAverage) {
+                        for (String student : quizGrades.keySet()) {
+                            if (Arrays.stream(quizGrades.get(student)).average().orElse(0) == lowestAverage) {
                                 io.print("- " + student);
                             }
                         }                        
