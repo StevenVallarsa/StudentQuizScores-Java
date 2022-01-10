@@ -4,7 +4,6 @@ package com.sv.studentquizscores2022;
 import com.sv.studentquizscores2022.UI.UserIO;
 import com.sv.studentquizscores2022.UI.UserIOImpl;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -92,9 +91,8 @@ public class App {
                         }
                         io.print("\nThe hightest grade is " + highestGrade + ", and was attained by:");
                         for (String student : quizGrades.keySet()) {
-                            if (Arrays.stream(quizGrades.get(student)).anyMatch(grade -> grade == highestGrade)) {
+                            if (Arrays.stream(quizGrades.get(student)).max().getAsDouble() == highestGrade) {
                                 io.print("- " + student);
-                                
                             }
                         }
                     }
@@ -133,11 +131,8 @@ public class App {
                         }
                         io.print("\nThe lowest grade is " + lowestGrade + ", and was attained by:");
                         for (String student : quizGrades.keySet()) {
-                            for (double grade : quizGrades.get(student)) {
-                                if (lowestGrade == grade) {
-                                    io.print("- " + student);
-                                    break;
-                                }
+                            if (Arrays.stream(quizGrades.get(student)).min().getAsDouble() == lowestGrade) {
+                                io.print("- " + student);
                             }
                         }
                     }
